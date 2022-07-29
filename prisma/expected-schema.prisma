@@ -1,0 +1,37 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id                       Int                        @id @default(autoincrement())
+  Name                     String
+  created_at               DateTime
+  Product_Category_Mapping Product_Category_Mapping[]
+
+  @@index([created_at])
+}
+
+model Product {
+  id                       Int                        @id @default(autoincrement())
+  Name                     String
+  created_at               DateTime
+  Product_Category_Mapping Product_Category_Mapping[]
+
+  @@index([created_at])
+}
+
+model Product_Category_Mapping {
+  id         Int      @id @default(autoincrement())
+  ProductId  Int
+  CategoryId Int
+  created_at DateTime
+  category   Category @relation(fields: [CategoryId], references: [id])
+  product    Product  @relation(fields: [ProductId], references: [id])
+
+  @@index([created_at])
+}
